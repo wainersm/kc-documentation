@@ -85,6 +85,14 @@ You need to install the following to build Kata Containers components:
 
 ```
 $ go get -d -u github.com/kata-containers/runtime
+```
+
+Ignore the error message:
+
+```
+package github.com/kata-containers/runtime: no Go files in $GOPATH/github.com/kata-containers/runtime
+
+```
 $ cd $GOPATH/src/github.com/kata-containers/runtime
 $ make && sudo -E PATH=$PATH make install
 ```
@@ -257,6 +265,9 @@ $ go get -d -u github.com/kata-containers/osbuilder
 ```
 
 ## Create a rootfs image
+
+First you must [get the osbuilder](#get-the-osbuilder).
+
 ### Create a local rootfs
 
 As a prerequisite, you need to install Docker. Otherwise, you will not be
@@ -282,7 +293,7 @@ You MUST choose one of `alpine`, `centos`, `clearlinux`, `debian`, `euleros`, `f
 
 > **Note:**
 >
-> - You should only do this step if you are testing with the latest version of the agent.
+> - You should only do this step if you are testing with the latest version of the agent. [Build a agent](#build-a-custom-kata-agent---optional)
 
 ```
 $ sudo install -o root -g root -m 0550 -t ${ROOTFS_DIR}/bin ../../agent/kata-agent
@@ -322,6 +333,7 @@ $ (cd /usr/share/kata-containers && sudo ln -sf "$image" kata-containers.img)
 ```
 $ export ROOTFS_DIR="${GOPATH}/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs"
 $ sudo rm -rf ${ROOTFS_DIR}
+$ sudo mkdir -p ${ROOTFS_DIR}
 $ cd $GOPATH/src/github.com/kata-containers/osbuilder/rootfs-builder
 $ script -fec 'sudo -E GOPATH=$GOPATH AGENT_INIT=yes USE_DOCKER=true SECCOMP=no ./rootfs.sh ${distro}'
 ```
